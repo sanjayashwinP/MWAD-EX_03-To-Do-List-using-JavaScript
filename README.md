@@ -237,7 +237,19 @@ function updateCounter() {
 }
 ```
 ## OUTPUT
+<img width="1905" height="852" alt="image" src="https://github.com/user-attachments/assets/d68c9168-5d1e-4723-a485-74d0b134d43a" />
 
+### Adding todo event
+<img width="1898" height="905" alt="Screenshot 2025-09-08 212528" src="https://github.com/user-attachments/assets/3350852b-f316-46a8-ab9d-3d60234de990" />
+
+### Event Completed
+<img width="1894" height="877" alt="Screenshot 2025-09-08 212615" src="https://github.com/user-attachments/assets/f7f895f3-0863-403e-b404-ad87454db388" />
+
+### Event Editing
+<img width="1895" height="889" alt="image" src="https://github.com/user-attachments/assets/3cff702a-5b4c-4e2d-aa60-f653515f61d3" />
+
+### Clear Event
+<img width="1893" height="870" alt="image" src="https://github.com/user-attachments/assets/f81b8207-855c-4445-a34c-def1895a17fb" />
 
 ## RESULT
 The program for creating To-do list using JavaScript is executed successfully.
