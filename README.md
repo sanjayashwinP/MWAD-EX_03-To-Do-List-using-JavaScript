@@ -43,30 +43,26 @@ Upload to GitHub Pages for free hosting.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My To-Do List</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanjay's To-Do App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="box">
-    <h1>📝 Sanjay's To-Do App</h1>
+    <h1>📝Sanjay's To-Do List</h1>
 
-    <input type="text" id="search" placeholder="Search...">
     <div class="inputs">
-      <input type="text" id="taskInput" placeholder="Enter task here...">
-      <select id="priority">
-        <option value="low">🟢 Low</option>
-        <option value="medium">🟡 Medium</option>
-        <option value="high">🔴 High</option>
-      </select>
-      <input type="date" id="date">
+      <input type="text" id="taskInput" placeholder="Enter task...">
       <button id="addBtn">Add</button>
+      <button id="clearAll">Clear All</button>
     </div>
-    <p id="counter">Tasks: 0 | Completed: 0</p>
+
+    <p id="counter">Pending: 0 | Completed: 0</p>
+
     <ul id="list"></ul>
-    <button id="clearBtn">Clear Completed</button>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
@@ -74,8 +70,7 @@ Upload to GitHub Pages for free hosting.
 ### style.css
 ```
 body {
-  background: #4503aeba;
-  color: #111;
+  background: #5c07d3;
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
@@ -86,11 +81,10 @@ body {
 
 .box {
   background: #fff;
-  color: #111;
   padding: 20px;
-  border-radius: 12px;
-  width: 420px;
-  box-shadow: 0px 5px 15px rgba(0,0,0,0.15);
+  border-radius: 10px;
+  width: 370px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
 }
 
 h1 {
@@ -98,47 +92,17 @@ h1 {
   margin-bottom: 15px;
 }
 
-#search {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  border: 1px solid #aaa;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-/* input area */
 .inputs {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  gap: 5px;
   margin-bottom: 15px;
 }
 
-.inputs input[type="text"] {
-  flex: 2;
-}
-
-.inputs select {
+#taskInput {
   flex: 1;
-}
-
-.inputs input[type="date"] {
-  flex: 1.2;
-}
-
-.inputs button {
-  flex: 0.8;
-  min-width: 70px;
-}
-
-input[type="text"], input[type="date"], select {
   padding: 8px;
   border: 1px solid #aaa;
-  border-radius: 6px;
-  box-sizing: border-box;
-  font-size: 14px;
+  border-radius: 5px;
 }
 
 button {
@@ -146,72 +110,131 @@ button {
   color: #fff;
   border: none;
   padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
 }
-
 button:hover {
   background: #3455c6;
 }
 
+#clearAll {
+  background: #f44336;
+}
+#clearAll:hover {
+  background: #c62828;
+}
+
 #counter {
-  margin: 10px 0;
-  font-size: 14px;
-  font-weight: bold;
   text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
 #list {
   list-style: none;
   padding: 0;
-  margin: 15px 0;
+  margin: 0;
 }
 
 #list li {
   background: #f9f9f9;
   margin-bottom: 8px;
-  padding: 10px 12px;
-  border-radius: 6px;
+  padding: 8px 10px;
+  border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
 }
-
-#list li.low { border-left: 5px solid green; }
-#list li.medium { border-left: 5px solid orange; }
-#list li.high { border-left: 5px solid red; }
 
 #list li.done {
   text-decoration: line-through;
   background: #d3ffd3;
 }
 
-#list .doneBtn, #list .editBtn, #list .delBtn {
+#list button {
   background: transparent;
-  border: 1px solid rgba(0,0,0,0.15);
-  padding: 3px 7px;
-  margin-left: 5px;
-  border-radius: 6px;
+  border: none;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
 }
-#list .doneBtn:hover, #list .editBtn:hover, #list .delBtn:hover {
-  background: #eee;
-}
-
-#clearBtn {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: bold;
+#list button:hover {
+  color: red;
 }
 ```
 ### script.js
 ```
+const taskInput = document.getElementById("taskInput");
+const addBtn = document.getElementById("addBtn");
+const taskList = document.getElementById("list");
+const counter = document.getElementById("counter");
+const clearAllBtn = document.getElementById("clearAll");
 
+addBtn.addEventListener("click", addTask);
+
+taskInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") addTask();
+});
+
+// Clear All button
+clearAllBtn.addEventListener("click", () => {
+  taskList.innerHTML = "";
+  updateCounter();
+});
+
+
+function addTask() {
+  const text = taskInput.value.trim();
+  if (text === "") {
+    alert("Please enter a task!");
+    return;
+  }
+
+  const li = document.createElement("li");
+
+  const span = document.createElement("span");
+  span.textContent = text;
+
+  const doneBtn = document.createElement("button");
+  doneBtn.textContent = "✔";
+  doneBtn.addEventListener("click", () => {
+    li.classList.toggle("done");
+    updateCounter();
+  });
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "✎";
+  editBtn.addEventListener("click", () => {
+    const newText = prompt("Edit your task:", span.textContent);
+    if (newText !== null && newText.trim() !== "") {
+      span.textContent = newText.trim();
+    }
+  });
+
+
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "✖";
+  delBtn.addEventListener("click", () => {
+    li.remove();
+    updateCounter();
+  });
+
+  li.appendChild(span);
+  li.appendChild(doneBtn);
+  li.appendChild(editBtn);
+  li.appendChild(delBtn);
+
+  taskList.appendChild(li);
+
+  taskInput.value = "";
+  updateCounter();
+}
+
+function updateCounter() {
+  const total = taskList.getElementsByTagName("li").length;
+  const completed = taskList.querySelectorAll(".done").length;
+  const pending = total - completed;
+  counter.textContent = `Pending: ${pending} | Completed: ${completed}`;
+}
 ```
 ## OUTPUT
 
